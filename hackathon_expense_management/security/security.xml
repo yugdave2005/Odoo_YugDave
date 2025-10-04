@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Security Groups -->
+    <record id="group_expense_employee" model="res.groups">
+        <field name="name">Employee: Expense Management</field>
+        <field name="category_id" ref="base.module_category_human_resources"/>
+        <field name="comment">Basic expense management rights for employees</field>
+    </record>
+
+    <record id="group_expense_manager" model="res.groups">
+        <field name="name">Manager: Expense Management</field>
+        <field name="category_id" ref="base.module_category_human_resources"/>
+        <field name="implied_ids" eval="[(4, ref('group_expense_employee'))]"/>
+        <field name="comment">Manager level access for expense approval and team management</field>
+    </record>
+
+    <record id="group_expense_admin" model="res.groups">
+        <field name="name">Administrator: Expense Management</field>
+        <field name="category_id" ref="base.module_category_human_resources"/>
+        <field name="implied_ids" eval="[(4, ref('group_expense_manager'))]"/>
+        <field name="comment">Full administrative access to expense management system</field>
+    </record>
+
+    <!-- Record Rules for Expense Claims -->
+    <record id="expense_claim_employee_rule" model="ir.rule">
+        <field name="name">Employee Own Expenses</field>
+        <field name="model_id" ref="model_expense_claim"/>
+        <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_expense_employee'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="expense_claim_manager_rule" model="ir.rule">
+        <field name="name">Manager Team Expenses</field>
+        <field name="model_id" ref="model_expense_claim"/>
+        <field name="domain_force">['|', ('employee_id.user_id', '=', user.id), ('approver_line_ids.approver_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_expense_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="expense_claim_admin_rule" model="ir.rule">
+        <field name="name">Admin All Expenses</field>
+        <field name="model_id" ref="model_expense_claim"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_expense_admin'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Record Rules for Expense Approver Lines -->
+    <record id="expense_approver_line_employee_rule" model="ir.rule">
+        <field name="name">Employee Own Approver Lines</field>
+        <field name="model_id" ref="model_expense_approver_line"/>
+        <field name="domain_force">[('claim_id.employee_id.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_expense_employee'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="expense_approver_line_manager_rule" model="ir.rule">
+        <field name="name">Manager Approver Lines</field>
+        <field name="model_id" ref="model_expense_approver_line"/>
+        <field name="domain_force">['|', ('claim_id.employee_id.user_id', '=', user.id), ('approver_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_expense_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="expense_approver_line_admin_rule" model="ir.rule">
+        <field name="name">Admin All Approver Lines</field>
+        <field name="model_id" ref="model_expense_approver_line"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_expense_admin'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Record Rules for Expense Categories -->
+    <record id="expense_category_all_rule" model="ir.rule">
+        <field name="name">All Users Categories Access</field>
+        <field name="model_id" ref="model_expense_category"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_expense_employee'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="expense_category_admin_rule" model="ir.rule">
+        <field name="name">Admin Categories Management</field>
+        <field name="model_id" ref="model_expense_category"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_expense_admin'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Record Rules for Approval Rules -->
+    <record id="expense_approval_rule_read_rule" model="ir.rule">
+        <field name="name">All Users Approval Rules Read</field>
+        <field name="model_id" ref="model_expense_approval_rule"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_expense_employee'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="expense_approval_rule_admin_rule" model="ir.rule">
+        <field name="name">Admin Approval Rules Management</field>
+        <field name="model_id" ref="model_expense_approval_rule"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_expense_admin'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Menu Access Rights -->
+    <record id="menu_expense_management_root" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('group_expense_employee'))]"/>
+    </record>
+
+    <record id="menu_configuration" model="ir.ui.menu">
+        <field name="groups_id" eval="[(4, ref('group_expense_admin'))]"/>
+    </record>
+
+</odoo>

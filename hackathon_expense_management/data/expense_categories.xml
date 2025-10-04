@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Default Expense Categories -->
+    <record id="category_travel" model="expense.category">
+        <field name="name">Travel</field>
+    </record>
+
+    <record id="category_meals" model="expense.category">
+        <field name="name">Meals & Entertainment</field>
+    </record>
+
+    <record id="category_accommodation" model="expense.category">
+        <field name="name">Accommodation</field>
+    </record>
+
+    <record id="category_transportation" model="expense.category">
+        <field name="name">Transportation</field>
+    </record>
+
+    <record id="category_office_supplies" model="expense.category">
+        <field name="name">Office Supplies</field>
+    </record>
+
+    <record id="category_communication" model="expense.category">
+        <field name="name">Communication</field>
+    </record>
+
+    <record id="category_training" model="expense.category">
+        <field name="name">Training & Development</field>
+    </record>
+
+    <record id="category_marketing" model="expense.category">
+        <field name="name">Marketing</field>
+    </record>
+
+    <record id="category_fuel" model="expense.category">
+        <field name="name">Fuel</field>
+    </record>
+
+    <record id="category_other" model="expense.category">
+        <field name="name">Other</field>
+    </record>
+</odoo>

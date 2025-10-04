@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_expense_claim_employee,expense.claim employee,model_expense_claim,group_expense_employee,1,1,1,0
+access_expense_claim_manager,expense.claim manager,model_expense_claim,group_expense_manager,1,1,1,0
+access_expense_claim_admin,expense.claim admin,model_expense_claim,group_expense_admin,1,1,1,1
+access_expense_approver_line_employee,expense.approver.line employee,model_expense_approver_line,group_expense_employee,1,0,1,0
+access_expense_approver_line_manager,expense.approver.line manager,model_expense_approver_line,group_expense_manager,1,1,1,0
+access_expense_approver_line_admin,expense.approver.line admin,model_expense_approver_line,group_expense_admin,1,1,1,1
+access_expense_category_employee,expense.category employee,model_expense_category,group_expense_employee,1,0,0,0
+access_expense_category_manager,expense.category manager,model_expense_category,group_expense_manager,1,0,0,0
+access_expense_category_admin,expense.category admin,model_expense_category,group_expense_admin,1,1,1,1
+access_expense_approval_rule_employee,expense.approval.rule employee,model_expense_approval_rule,group_expense_employee,1,0,0,0
+access_expense_approval_rule_manager,expense.approval.rule manager,model_expense_approval_rule,group_expense_manager,1,0,0,0
+access_expense_approval_rule_admin,expense.approval.rule admin,model_expense_approval_rule,group_expense_admin,1,1,1,1
